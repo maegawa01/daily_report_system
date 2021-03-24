@@ -28,7 +28,8 @@
                                 <c:otherwise>
                                     <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細を表示</a>
                                 </c:otherwise>
-                            </c:choose></td>
+                            </c:choose>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>

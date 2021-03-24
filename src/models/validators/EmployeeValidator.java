@@ -40,7 +40,7 @@ public class EmployeeValidator {
         // 既に登録されている社員番号との重複チェック
         if (codeDuplicateCheckFlag) {
             EntityManager em = DBUtil.createEntityManager();
-            long employees_count = (long) em.createNamedQuery("chechRegisteredCode",
+            long employees_count = (long) em.createNamedQuery("checkRegisteredCode",
                     Long.class).setParameter("code", code).getSingleResult();
             em.close();
             if (employees_count > 0) {
@@ -51,7 +51,7 @@ public class EmployeeValidator {
 
     }
 
-    // 社員名の重複チェック
+    // 社員名の必須入力チェック
     private static String validateName(String name) {
         if (name == null || name.equals("")) {
             return "氏名を入力してください。";
