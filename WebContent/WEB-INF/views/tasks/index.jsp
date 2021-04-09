@@ -40,7 +40,7 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='/task/new' />">新規タスクの登録</a></p>
+        <p><a href="<c:url value='/tasks/new' />">新規タスクの登録</a></p>
 
     </c:param>
 </c:import>
