@@ -44,8 +44,8 @@ public class Task {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
 
-    @Column(name = "deadline", nullable = false)
-    private Timestamp deadline;
+    @Column(name = "limitdate", nullable = false)
+    private Timestamp limitdate;
 
     @Column(name = "title", length = 255, nullable = false)
     private String title;
@@ -54,7 +54,8 @@ public class Task {
     @Column(name = "content", nullable = false)
     private String content;
 
-
+    @Column(name = "status")
+    private boolean status;
 
     public Integer getId() {
         return id;
@@ -88,12 +89,12 @@ public class Task {
         this.updated_at = updated_at;
     }
 
-    public Timestamp getDeadline() {
-        return deadline;
+    public Timestamp getLimitdate() {
+        return limitdate;
     }
 
-    public void setDeadline(Timestamp deadline) {
-        this.deadline = deadline;
+    public void setLimitdate(Timestamp limitdate) {
+        this.limitdate = limitdate;
     }
 
     public String getTitle() {
@@ -111,6 +112,16 @@ public class Task {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+
 
 
 

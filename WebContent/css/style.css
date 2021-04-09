@@ -165,3 +165,25 @@ pre {
 h3 {
     font-size: larger;
 }
+
+table#task_list th {
+    font-weight: bold;
+    padding: 10px 2%;
+}
+
+table#task_list .report_name {
+    width: 20%;
+    padding: 10px 2%;
+}
+
+table#task_list .report_date {
+    width: 20%;
+}
+
+table#task_list .report_title {
+    width: 37%;
+}
+
+table#task_list .report_action {
+    width: 13%;
+}
