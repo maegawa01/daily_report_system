@@ -12,7 +12,7 @@
     </div>
 </c:if>
 <label for="limitdate">期日</label><br />
-<input type="date" name="limitdate" value="<fmt:formatDate value='${task.limitdate}' pattern='yyyy-MM-dd' />" />
+<input type="date" name="limitdate" value="<fmt:formatDate value='${limitdate}' pattern='yyyy-MM-dd HH:mm:ss' />" />
 <br /><br />
 
 <label for="title">タスク内容</label><br />

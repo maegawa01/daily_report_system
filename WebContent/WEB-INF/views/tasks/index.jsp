@@ -14,7 +14,12 @@
         <table id="task_list">
             <tbody>
                 <tr>
-                    <th class="limitdate">期日</th>
+                    <th class="limitdate">期日
+                    <%-- 日報の並び順が昇順　or　降順の情報をクエリパラメーターで送りつける --%>
+                    <%-- order=desc or order=asc --%>
+                        <a href="<c:url value='/tasks/index?order=desc' />">▼</a>
+                        <a href="<c:url value='/tasks/index?order=asc' />">▲</a>
+                    </th>
                     <th class="title">タスク内容</th>
                     <th class="status">ステータス</th>
                 </tr>
@@ -22,22 +27,35 @@
                     <tr class="row${status.count % 2}">
                         <td class="limitdate"><fmt:formatDate
                                 value='${task.limitdate}' pattern='yyyy-MM-dd' /></td>
-                        <td class="title"><a href="<c:url value='/tasks/show?id=${task.id}' />">${task.title}</a></td>
-                        <td class="status">
-                            <div>
-                                <input type="radio" id="huey" name="drone" value="huey" checked>
-                                <label for="huey">完了</label>
-                            </div>
+                        <td class="title"><a
+                            href="<c:url value='/tasks/show?id=${task.id}' />">${task.title}</a></td>
 
-                            <div>
-                                <input type="radio" id="dewey" name="drone" value="dewey">
-                                <label for="dewey">未完</label>
-                            </div>
+
+                      <%-- ステータスの登録 --%>
+                        <td class="status">
+                            <form action="./index" method="post">
+                                <label>
+                                    <input type="radio" name="status" value="complete"
+                                    <c:if test="${status == 'complete'}"> checked </c:if>> 完了
+                                </label>
+                                <label>
+                                    <input type="radio" name="status" value="unfinished" > 未完
+                                </label>
+                                <input type="hidden" name="taskId" value="${task.id}" />
+                                   <input type="submit"  value="更新"/>
+
+<c:if test="${userinfo.sex == '0'}">checked</c:if>
+
+                            </form>
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
+
+
+
+
 
         <div id="pagination">
             (全 ${tasks_count} 件) <br />

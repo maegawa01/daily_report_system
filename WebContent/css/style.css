@@ -171,19 +171,16 @@ table#task_list th {
     padding: 10px 2%;
 }
 
-table#task_list .report_name {
+table#task_list .limitdate {
     width: 20%;
     padding: 10px 2%;
 }
 
-table#task_list .report_date {
+table#task_list .title {
     width: 20%;
 }
 
-table#task_list .report_title {
+table#task_list .status {
     width: 37%;
 }
 
-table#task_list .report_action {
-    width: 13%;
-}

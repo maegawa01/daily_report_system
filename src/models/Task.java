@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -16,14 +17,19 @@ import javax.persistence.Table;
 
 @Table(name = "tasks")
 @NamedQueries({
-    @NamedQuery(
-            name = "getAllTasks",
-            query = "SELECT r FROM Task AS r ORDER BY r.id DESC"
+   @NamedQuery(
+            name = "getOrderAsc",
+            query = "SELECT r FROM Task AS r ORDER BY r.limitdate ASC"
             ),
-    @NamedQuery(
+   @NamedQuery(
+            name = "getOrderDesc",
+            query = "SELECT r FROM Task AS r ORDER BY r.limitdate DESC"
+            ),
+   @NamedQuery(
             name = "getTasksCount",
             query = "SELECT COUNT(r) FROM Task AS r"
-            ),
+            )
+
 })
 
 @Entity
@@ -45,7 +51,7 @@ public class Task {
     private Timestamp updated_at;
 
     @Column(name = "limitdate", nullable = false)
-    private Timestamp limitdate;
+    private Date limitdate;
 
     @Column(name = "title", length = 255, nullable = false)
     private String title;
@@ -55,7 +61,7 @@ public class Task {
     private String content;
 
     @Column(name = "status")
-    private boolean status;
+    private String status;
 
     public Integer getId() {
         return id;
@@ -89,11 +95,11 @@ public class Task {
         this.updated_at = updated_at;
     }
 
-    public Timestamp getLimitdate() {
+    public Date getLimitdate() {
         return limitdate;
     }
 
-    public void setLimitdate(Timestamp limitdate) {
+    public void setLimitdate(Date limitdate) {
         this.limitdate = limitdate;
     }
 
@@ -113,11 +119,11 @@ public class Task {
         this.content = content;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

@@ -13,22 +13,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Employee;
 import models.Task;
 import models.validators.TaskValidator;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class TasksCreateServlet
+ * Servlet implementation class TasksUpdateServlet
  */
-@WebServlet("/tasks/create")
-public class TasksCreateServlet extends HttpServlet {
+@WebServlet("/tasks/update")
+public class TasksUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public TasksCreateServlet() {
+    public TasksUpdateServlet() {
         super();
     }
 
@@ -37,22 +36,17 @@ public class TasksCreateServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-
         String _token = request.getParameter("_token");
+
         if (_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
-            Task r = new Task();
+            Task r = em.find(Task.class, (Integer) (request.getSession().getAttribute("task_id")));
 
-            r.setEmployee((Employee) request.getSession().getAttribute("login_employee"));
+            r.setLimitdate(Date.valueOf(request.getParameter("limitdate")));
             r.setTitle(request.getParameter("title"));
             r.setContent(request.getParameter("content"));
-            r.setLimitdate(Date.valueOf(request.getParameter("limitdate")));
-
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            r.setCreated_at(currentTime);
-            r.setUpdated_at(currentTime);
+            r.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
             List<String> errors = TaskValidator.validate(r);
             if (errors.size() > 0) {
@@ -62,19 +56,19 @@ public class TasksCreateServlet extends HttpServlet {
                 request.setAttribute("task", r);
                 request.setAttribute("errors", errors);
 
-                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/new.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/edit.jsp");
                 rd.forward(request, response);
             } else {
                 em.getTransaction().begin();
-                em.persist(r);
                 em.getTransaction().commit();
                 em.close();
-                request.getSession().setAttribute("flush", "登録が完了しました。");
+                request.getSession().setAttribute("flush", "更新が完了しました。");
 
+                request.getSession().removeAttribute("task_id");
                 response.sendRedirect(request.getContextPath() + "/tasks/index");
+
             }
         }
-
     }
 
 }

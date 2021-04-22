@@ -6,7 +6,7 @@
     <c:param name="content">
         <c:choose>
             <c:when test="${task != null}">
-                <h2>タスク 詳細ページ</h2>
+                <h2>タスク 詳細</h2>
 
                 <table>
                     <tbody>
@@ -16,11 +16,11 @@
                         </tr>
                         <tr>
                             <th>作成日時</th>
-                            <td><fmt:formatDate value="${task.created_at}" pattern="yyyy-MM-dd" /></td>
+                            <td><fmt:formatDate value="${task.created_at}" pattern="yyyy-MM-dd HH:mm" /></td>
                         </tr>
                         <tr>
                             <th>更新日時</th>
-                            <td><fmt:formatDate value="${task.updated_at}" pattern="yyyy-MM-dd" /></td>
+                            <td><fmt:formatDate value="${task.updated_at}" pattern="yyyy-MM-dd HH:mm" /></td>
                         </tr>
                         <tr>
                             <th>タスク内容</th>
@@ -35,6 +35,7 @@
 
                 <c:if test="${sessionScope.login_employee.id == task.employee.id}">
                     <p><a href="<c:url value="/tasks/edit?id=${task.id}" />">このタスクを編集する</a></p>
+
                 </c:if>
             </c:when>
             <c:otherwise>
