@@ -32,19 +32,30 @@
 
 
                       <%-- ステータスの登録 --%>
-                        <td class="status">
+                  <td class="status">
                             <form action="./index" method="post">
+
                                 <label>
-                                    <input type="radio" name="status" value="complete"
-                                    <c:if test="${status == 'complete'}"> checked </c:if>> 完了
+                                    <input type="radio" name="status"
+                                   <c:if test="${task.status == 'complete'}"> <c:out value="checked" /> </c:if> value="complete" /> 完了
+
                                 </label>
+
                                 <label>
-                                    <input type="radio" name="status" value="unfinished" > 未完
+                                    <input type="radio" name="status"
+
+
+
+                               <c:if test="${task.status == 'unfinished'}"> <c:out value="checked" /> </c:if>
+
+                                 <c:if test="${task.status == null}"> <c:out value="checked" /> </c:if> value="unfinished" /> 未完
+
+
                                 </label>
+
                                 <input type="hidden" name="taskId" value="${task.id}" />
                                    <input type="submit"  value="更新"/>
 
-<c:if test="${userinfo.sex == '0'}">checked</c:if>
 
                             </form>
                         </td>
