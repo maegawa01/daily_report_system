@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -10,15 +9,15 @@
                 <c:out value="${flush}"></c:out>
             </div>
         </c:if>
+
         <h2>タスク 一覧</h2>
         <table id="task_list">
             <tbody>
                 <tr>
-                    <th class="limitdate">期日
-                    <%-- 日報の並び順が昇順　or　降順の情報をクエリパラメーターで送りつける --%>
-                    <%-- order=desc or order=asc --%>
-                        <a href="<c:url value='/tasks/index?order=desc' />">▼</a>
-                        <a href="<c:url value='/tasks/index?order=asc' />">▲</a>
+                    <th class="limitdate">期日 <%-- 日報の並び順が昇順　or　降順の情報をクエリパラメーターで送りつける --%>
+                        <%-- order=desc or order=asc --%>
+                        <a href="<c:url value='/tasks/index?order=desc' />">▼</a>  <%-- orderに▼(desc)が格納された変数を送る --%>
+                        <a href="<c:url value='/tasks/index?order=asc' />">▲</a>  <%-- orderに▲(asc)が格納された変数を送る --%>
                     </th>
                     <th class="title">タスク内容</th>
                     <th class="status">ステータス</th>
@@ -31,31 +30,28 @@
                             href="<c:url value='/tasks/show?id=${task.id}' />">${task.title}</a></td>
 
 
-                      <%-- ステータスの登録 --%>
-                  <td class="status">
-                            <form action="./index" method="post">
+                        <%-- ステータスの登録 --%>
+                        <td class="status">
+                            <form action="./index" method="post">  <%-- indexServletにPOST送信 --%>
 
                                 <label>
-                                    <input type="radio" name="status"
-                                   <c:if test="${task.status == 'complete'}"> <c:out value="checked" /> </c:if> value="complete" /> 完了
+                                    <input type="radio" name="status"  <%-- ラジオボタン nameはservletと合わせる --%>
 
+                                    <%-- データベースのstatusがcompleteなら completeにチェックを付ける --%>
+                                    <c:if test="${task.status == 'complete'}"> <c:out value="checked" /> </c:if>
+                                    value="complete" /> 完了
                                 </label>
-
                                 <label>
                                     <input type="radio" name="status"
 
-
-
-                               <c:if test="${task.status == 'unfinished'}"> <c:out value="checked" /> </c:if>
-
-                                 <c:if test="${task.status == null}"> <c:out value="checked" /> </c:if> value="unfinished" /> 未完
-
-
+                                     <%-- データベースのstatusがunfinishedかnullならunfinishedにチェックを付ける --%>
+                                    <c:if test="${task.status == 'unfinished'}"> <c:out value="checked" /> </c:if>
+                                    <c:if test="${task.status == null}"> <c:out value="checked" /> </c:if>
+                                    value="unfinished" /> 未完
                                 </label>
 
                                 <input type="hidden" name="taskId" value="${task.id}" />
-                                   <input type="submit"  value="更新"/>
-
+                                <input type="submit" value="更新" />
 
                             </form>
                         </td>
@@ -64,21 +60,15 @@
             </tbody>
         </table>
 
-
-
-
-
         <div id="pagination">
             (全 ${tasks_count} 件) <br />
-            <c:forEach var="i" begin="1" end="${((tasks_count - 1) / 15) + 1}"
-                step="1">
+            <c:forEach var="i" begin="1" end="${((tasks_count - 1) / 15) + 1}" step="1">
                 <c:choose>
                     <c:when test="${i == page}">
                         <c:out value="${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='/task/index?page=${i}' />"><c:out
-                                value="${i}" /></a>&nbsp;
+                        <a href="<c:url value='/task/index?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
@@ -86,6 +76,5 @@
         <p>
             <a href="<c:url value='/tasks/new' />">新規タスクの登録</a>
         </p>
-
     </c:param>
 </c:import>

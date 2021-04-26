@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
 import models.Report;
 import utils.DBUtil;
 
@@ -35,6 +36,8 @@ public class ReportsIndexServlet extends HttpServlet {
 
         EntityManager em = DBUtil.createEntityManager();
 
+        Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
+
         int page;
         try{
             page = Integer.parseInt(request.getParameter("page"));
@@ -42,17 +45,47 @@ public class ReportsIndexServlet extends HttpServlet {
             page = 1;
         }
 
-        List<Report> reports = em.createNamedQuery("getAllReports", Report.class)
-                .setFirstResult(15 * (page - 1))
-                .setMaxResults(15)
-                .getResultList();
 
-        long reports_count = (long)em.createNamedQuery("getReportsCount", Long.class)
+        // 検索機能
+        // jspでクエリパラメタに格納した"search"をString search 格納
+        String search = request.getParameter("search");
+        System.out.println(search);
+
+
+        if(search == null || search.equals("")) {
+            List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class)
+                    .setParameter("employee",  login_employee)
+                    .setFirstResult(15 * (page - 1))
+                    .setMaxResults(15)
+                    .getResultList();
+            request.setAttribute("reports",  reports);
+
+        } else {
+            List<Report> reportSearch = em.createNamedQuery("getReportSearch", Report.class)
+                    .setParameter("employee",  login_employee)
+                    .setParameter("word", "%" + search + "%")
+                    .setFirstResult(15 * (page - 1))
+                    .setMaxResults(15)
+                    .getResultList();
+
+            // listを拡張for文で展開
+            for (Report report : reportSearch) {
+              System.out.println(report.getTitle());
+            }
+
+            request.setAttribute("reports", reportSearch);
+
+
+
+        }
+
+        long reports_count = (long)em.createNamedQuery("getMyReportsCount", Long.class)
+                .setParameter("employee",  login_employee)
                 .getSingleResult();
 
         em.close();
 
-        request.setAttribute("reports",  reports);
+
         request.setAttribute("reports_count",  reports_count);
         request.setAttribute("page",  page);
         if(request.getSession().getAttribute("flush") != null) {

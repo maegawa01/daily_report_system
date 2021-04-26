@@ -10,6 +10,14 @@
             </div>
         </c:if>
         <h2>日報  一覧</h2>
+
+        <%-- 検索機能 --%>
+        <form action="./index" method="get">
+        <input type="text" name="search" value="">
+        <input type="submit" value="日報検索" >
+
+        </form>
+
         <table id="report_list">
             <tbody>
                 <tr>
