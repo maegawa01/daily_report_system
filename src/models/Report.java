@@ -33,9 +33,13 @@ import javax.persistence.Table;
             name = "getMyReportsCount",
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
             ),
-    @NamedQuery(
+    @NamedQuery(  //自分の日報のみを対象に部分一致検索
             name = "getReportSearch" ,
             query = "SELECT r FROM Report AS r WHERE r.employee =  :employee and r.title like :word"
+            ),
+    @NamedQuery(
+            name = "getReportSearchCount",
+            query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee and r.title like :word"
             )
 })
 

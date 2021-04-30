@@ -13,7 +13,7 @@
 
         <%-- 検索機能 --%>
         <form action="./index" method="get">
-        <input type="text" name="search" value="">
+        <input type="text" name="search" value="${search}" >
         <input type="submit" value="日報検索" >
 
         </form>
@@ -45,7 +45,9 @@
                         <c:out value="${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='/reports/index?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                    <%-- ページネーション機能 --%>
+                    <%-- ${i}でページ情報を&{search}で検索ボックスの値をservletに渡す --%>
+                        <a href="<c:url value='/reports/index?page=${i}&search=${search}' />"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

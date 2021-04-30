@@ -32,37 +32,48 @@ public class ReportsIndexServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
         EntityManager em = DBUtil.createEntityManager();
 
-        Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
+        Employee login_employee = (Employee) request.getSession().getAttribute("login_employee");
 
         int page;
-        try{
+        try {
             page = Integer.parseInt(request.getParameter("page"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             page = 1;
         }
 
-
         // 検索機能
-        // jspでクエリパラメタに格納した"search"をString search 格納
+        // jspからエリパラメタで渡された"search"をString search 格納
         String search = request.getParameter("search");
+
+        // ページネーション機能
+        //jspからクエリパラメタで渡された値を"search"リクエストスコープにセット
+        request.setAttribute("search", search);
+
+        // デバック用
         System.out.println(search);
 
+        long reports_count;
 
-        if(search == null || search.equals("")) {
+        if (search == null || search.equals("")) {
             List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class)
-                    .setParameter("employee",  login_employee)
+                    .setParameter("employee", login_employee)
                     .setFirstResult(15 * (page - 1))
                     .setMaxResults(15)
                     .getResultList();
-            request.setAttribute("reports",  reports);
+            request.setAttribute("reports", reports);
+
+            reports_count = (long) em.createNamedQuery("getMyReportsCount", Long.class)
+                    .setParameter("employee", login_employee)
+                    .getSingleResult();
 
         } else {
             List<Report> reportSearch = em.createNamedQuery("getReportSearch", Report.class)
-                    .setParameter("employee",  login_employee)
+                    .setParameter("employee", login_employee)
                     .setParameter("word", "%" + search + "%")
                     .setFirstResult(15 * (page - 1))
                     .setMaxResults(15)
@@ -70,26 +81,23 @@ public class ReportsIndexServlet extends HttpServlet {
 
             // listを拡張for文で展開
             for (Report report : reportSearch) {
-              System.out.println(report.getTitle());
+                System.out.println(report.getTitle());
             }
-
             request.setAttribute("reports", reportSearch);
 
-
-
+            reports_count = (long) em.createNamedQuery("getReportSearchCount", Long.class)
+                    .setParameter("employee", login_employee)
+                    .setParameter("word", "%" + search + "%")
+                    .getSingleResult();
         }
 
-        long reports_count = (long)em.createNamedQuery("getMyReportsCount", Long.class)
-                .setParameter("employee",  login_employee)
-                .getSingleResult();
 
         em.close();
 
-
-        request.setAttribute("reports_count",  reports_count);
-        request.setAttribute("page",  page);
-        if(request.getSession().getAttribute("flush") != null) {
-            request.setAttribute("flush",  request.getSession().getAttribute("flush"));
+        request.setAttribute("reports_count", reports_count);
+        request.setAttribute("page", page);
+        if (request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
         }
 
