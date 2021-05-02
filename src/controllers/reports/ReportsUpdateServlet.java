@@ -52,6 +52,7 @@ public class ReportsUpdateServlet extends HttpServlet {
             if (errors.size() > 0) {
                 em.close();
 
+
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("report", r);
                 request.setAttribute("errors", errors);

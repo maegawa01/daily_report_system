@@ -10,27 +10,52 @@
             </div>
         </c:if>
         <h2>従業員 一覧</h2>
+
+        <%-- 検索機能 --%>
+         <form action="./index" method="get">
+        <input type="text" name="search" value="${search}" >
+        <input type="submit" value="従業員検索" >
+        </form><br />
+
         <table id="employee_list">
             <tbody>
                 <tr>
                     <th>社員番号</th>
                     <th>氏名</th>
+                    <th>権限</th>
                     <th>操作</th>
+                    <th>フォロー状況</th>
                 </tr>
                 <c:forEach var="employee" items="${employees}" varStatus="status">
                     <tr class="row${status.count % 2}">
                         <td><c:out value="${employee.code}" /></td>
                         <td><c:out value="${employee.name}" /></td>
                         <td><c:choose>
+                                    <c:when test="${employee.admin_flag == 1}">管理者</c:when>
+                                    <c:otherwise>一般</c:otherwise>
+                                </c:choose>
+
+                        <td>
+                            <c:choose>
                                 <c:when test="${employee.delete_flag == 1}">
                                 (削除済み)
-                            </c:when>
+                                </c:when>
                                 <c:otherwise>
                                     <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細を表示</a>
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                    </tr>
+                        <td>
+     <%--                       <c:choose>
+                                <c:when test="${employee.follow_flag == 1}">
+                                フォロー中
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="<c:url value='/employees/follow?id=${employee.id}' />">フォローする</a>
+                                </c:otherwise>
+                            </c:choose>
+--%>                    </td>
+                     </tr>
                 </c:forEach>
             </tbody>
         </table>
@@ -44,8 +69,9 @@
                         <c:out value="${i}" /> &nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='/employees/index?page=${i}' />"><c:out
-                                value="${i}" /></a> &nbsp;
+                     <%-- ページネーション機能 --%>
+                    <%-- ${i}でページ情報を&{search}で検索ボックスの値をservletに渡す --%>
+                        <a href="<c:url value='/employees/index?page=${i}&search=${search}' />"><c:out value="${i}" /></a> &nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

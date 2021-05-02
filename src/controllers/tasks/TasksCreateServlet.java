@@ -48,7 +48,13 @@ public class TasksCreateServlet extends HttpServlet {
             r.setEmployee((Employee) request.getSession().getAttribute("login_employee"));
             r.setTitle(request.getParameter("title"));
             r.setContent(request.getParameter("content"));
-            r.setLimitdate(Date.valueOf(request.getParameter("limitdate")));
+
+            Date limitdate = new Date(System.currentTimeMillis());
+            String ld_str = request.getParameter("limitdate");
+            if(ld_str != null && !ld_str.equals("")) {
+                limitdate = Date.valueOf(request.getParameter("limitdate"));
+            }
+            r.setLimitdate(limitdate);
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             r.setCreated_at(currentTime);

@@ -47,10 +47,10 @@ public class ReportsIndexServlet extends HttpServlet {
         }
 
         // 検索機能
-        // jspからエリパラメタで渡された"search"をString search 格納
+        // jspからクエリパラメタで渡された"search"をString search 格納
         String search = request.getParameter("search");
 
-        // ページネーション機能
+        // 検索後の画面に遷移後に検索窓に検索ワードを表示する
         //jspからクエリパラメタで渡された値を"search"リクエストスコープにセット
         request.setAttribute("search", search);
 
@@ -59,6 +59,8 @@ public class ReportsIndexServlet extends HttpServlet {
 
         long reports_count;
 
+        // saerch if文
+        // searchがnull もしくは 空白 の場合 （デフォルトの表示）
         if (search == null || search.equals("")) {
             List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class)
                     .setParameter("employee", login_employee)
@@ -71,10 +73,11 @@ public class ReportsIndexServlet extends HttpServlet {
                     .setParameter("employee", login_employee)
                     .getSingleResult();
 
+            // searchがnull もしくは 空白 の場合以外 （検索結果の表示）
         } else {
             List<Report> reportSearch = em.createNamedQuery("getReportSearch", Report.class)
-                    .setParameter("employee", login_employee)
-                    .setParameter("word", "%" + search + "%")
+                    .setParameter("employee", login_employee) // ログイン情報の取得
+                    .setParameter("word", "%" + search + "%") // 検索クエリ呼び出し
                     .setFirstResult(15 * (page - 1))
                     .setMaxResults(15)
                     .getResultList();
@@ -90,7 +93,6 @@ public class ReportsIndexServlet extends HttpServlet {
                     .setParameter("word", "%" + search + "%")
                     .getSingleResult();
         }
-
 
         em.close();
 

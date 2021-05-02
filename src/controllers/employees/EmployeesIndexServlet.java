@@ -39,17 +39,56 @@ public class EmployeesIndexServlet extends HttpServlet {
         try {
             page = Integer.parseInt(request.getParameter("page"));
         } catch (NumberFormatException e) {
+            page = 1;
         }
-        List<Employee> employees = em.createNamedQuery("getAllEmployees", Employee.class)
-                .setFirstResult(15 * (page - 1))
-                .setMaxResults(15)
-                .getResultList();
 
-        long employees_count = (long) em.createNamedQuery("getEmployeesCount", Long.class)
+        // 検索機能
+        // jspからクエリパラメで渡された"saerch"をString search に格納
+        String search = request.getParameter("search");
+
+        // 検索後の画面に遷移後に検索窓に検索ワードを表示する
+        // jspからクエリパラメタで渡された値を"search"リクエストスコープにセット
+        request.setAttribute("search",  search);
+
+        // デバック用
+        System.out.println(search);
+
+        long employees_count;
+
+        // search if 文
+        // search が null 若しくは 空白 の場合（デフォルトの表示）
+        if (search == null || search.equals("")) {
+
+            List<Employee> employees = em.createNamedQuery("getAllEmployees", Employee.class)
+                    .setFirstResult(15 * (page - 1))
+                    .setMaxResults(15)
+                    .getResultList();
+            request.setAttribute("employees", employees);
+
+            employees_count = (long) em.createNamedQuery("getEmployeesCount", Long.class)
+                    .getSingleResult();
+
+        } else {
+            List<Employee> employeeSearch = em.createNamedQuery("getEmployeeSearch", Employee.class)
+                    .setParameter("name", "%" + search + "%") // 検索クエリの呼びだし
+                    .setFirstResult(15 * (page - 1))
+                    .setMaxResults(15)
+                    .getResultList();
+
+            // listを拡張for文で展開
+            for (Employee employee : employeeSearch) {
+                System.out.println(employee.getName());
+            }
+            request.setAttribute("employees", employeeSearch);
+
+
+        employees_count = (long) em.createNamedQuery("getEmployeeSearchCount", Long.class)
+                .setParameter("name", "%" + search + "%")
                 .getSingleResult();
+
+    }
         em.close();
 
-        request.setAttribute("employees", employees);
         request.setAttribute("employees_count", employees_count);
         request.setAttribute("page", page);
         if (request.getSession().getAttribute("flush") != null) {

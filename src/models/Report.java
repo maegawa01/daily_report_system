@@ -41,6 +41,9 @@ import javax.persistence.Table;
             name = "getReportSearchCount",
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee and r.title like :word"
             )
+    //@NamedQuery(
+         //   name = "getSearchReportDate" ,
+          //  query = "SELECT r FROM Report AS r WHERE r.employee = "                    )
 })
 
 @Entity

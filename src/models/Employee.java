@@ -28,7 +28,16 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "checkLoginCodeAndPassword",
             query = "SELECT e FROM Employee AS e WHERE e.delete_flag = 0 AND e.code = :code AND e.password = :pass"
+            ),
+    @NamedQuery(
+            name = "getEmployeeSearch",
+            query = "SELECT e FROM Employee AS e WHERE e.name like :name"
+            ),
+    @NamedQuery(
+            name = "getEmployeeSearchCount",
+            query = "SELECT COUNT(e) FROM Employee AS e WHERE e.name like :name"
             )
+
 })
 @Entity
 public class Employee {
