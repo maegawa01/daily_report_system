@@ -15,8 +15,7 @@
         <form action="./index" method="get">
         <input type="text" name="search" value="${search}" >
         <input type="submit" value="日報検索" >
-
-        </form>
+        </form><br />
 
         <table id="report_list">
             <tbody>
