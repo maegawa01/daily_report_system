@@ -21,9 +21,7 @@
                     <c:if test="${sessionScope.login_employee.admin_flag == 1}">
                         <a href="<c:url value='/reports/index' />">日報一覧</a>&nbsp;
                     </c:if>
-                    <a href="<c:url value='/reports/index' />">メッセージ一覧</a>&nbsp;
                     <a href="<c:url value='/tasks/index' />">タスク一覧</a>&nbsp;
-                    <a href="<c:url value='/reports/index' />">フォロワー一覧</a>&nbsp;
                     <a href="<c:url value='/employees/index' />">従業員一覧</a>&nbsp;
                     </c:if>
 

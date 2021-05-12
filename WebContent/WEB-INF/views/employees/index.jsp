@@ -13,7 +13,8 @@
 
         <%-- 検索機能 --%>
         <form action="./index" method="get">
-            <input type="text" name="search" value="${search}"> <input type="submit" value="従業員検索">
+            <input type="text" name="search" value="${search}"> <input
+                type="submit" value="従業員検索">
         </form>
         <br />
 
@@ -24,7 +25,6 @@
                     <th>氏名</th>
                     <th>権限</th>
                     <th>操作</th>
-                    <th>フォロー状況</th>
                 </tr>
                 <c:forEach var="employee" items="${employees}" varStatus="status">
                     <tr class="row${status.count % 2}">
@@ -42,13 +42,10 @@
                                     <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細を表示</a>
                                 </c:otherwise>
                             </c:choose></td>
-                        <td class="follow">
-                            <form action="/daily_report_system/follows/create" method="post">
-                                <input type="hidden" name="follow" value="${employee.id}" /> <input
-                                    type="submit" value="フォローする" />
 
-                            </form>
-                        </td>
+
+
+
                     </tr>
                 </c:forEach>
             </tbody>

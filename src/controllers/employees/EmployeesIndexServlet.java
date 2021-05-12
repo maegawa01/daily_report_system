@@ -87,6 +87,7 @@ public class EmployeesIndexServlet extends HttpServlet {
                 .getSingleResult();
 
     }
+
         em.close();
 
         request.setAttribute("employees_count", employees_count);
